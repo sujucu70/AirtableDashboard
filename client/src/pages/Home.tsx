@@ -8,6 +8,7 @@ import { StatsPanel } from "@/components/StatsPanel";
 import { DetailView } from "@/components/DetailView";
 import { SyncDialog } from "@/components/SyncDialog";
 import { TrendsChart } from "@/components/TrendsChart";
+import { TrainingInsights } from "@/components/TrainingInsights";
 import { Button } from "@/components/ui/button";
 import { Download, User, LogOut } from "lucide-react";
 import { toast } from "sonner";
@@ -223,6 +224,12 @@ export default function Home() {
           isLoading={trendsLoading}
           dateRange={trendsDateRange}
           onDateRangeChange={setTrendsDateRange}
+        />
+
+        {/* Training Insights */}
+        <TrainingInsights
+          evaluations={evaluations || []}
+          isLoading={evaluationsLoading}
         />
 
         {/* Filters */}
