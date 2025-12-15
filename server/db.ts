@@ -18,7 +18,7 @@ export async function getDb() {
         host: dbUrl.hostname,
         port: parseInt(dbUrl.port) || 4000,
         user: dbUrl.username,
-        password: dbUrl.password,
+        password: decodeURIComponent(dbUrl.password),
         database: dbUrl.pathname.slice(1), // Remove leading /
         ssl: {
           minVersion: 'TLSv1.2',

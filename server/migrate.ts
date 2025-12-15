@@ -1,5 +1,6 @@
 import { drizzle } from "drizzle-orm/mysql2";
 import { sql } from "drizzle-orm";
+import mysql from "mysql2/promise";
 
 /**
  * Creates database tables if they don't exist
@@ -11,8 +12,29 @@ export async function ensureTablesExist(): Promise<void> {
     return;
   }
 
+  let pool: mysql.Pool | null = null;
+
   try {
-    const db = drizzle(process.env.DATABASE_URL);
+    // Parse the DATABASE_URL
+    const dbUrl = new URL(process.env.DATABASE_URL);
+
+    // Create connection pool with SSL enabled for TiDB Cloud
+    pool = mysql.createPool({
+      host: dbUrl.hostname,
+      port: parseInt(dbUrl.port) || 4000,
+      user: dbUrl.username,
+      password: decodeURIComponent(dbUrl.password),
+      database: dbUrl.pathname.slice(1), // Remove leading /
+      ssl: {
+        minVersion: 'TLSv1.2',
+        rejectUnauthorized: true
+      },
+      waitForConnections: true,
+      connectionLimit: 5,
+      queueLimit: 0
+    });
+
+    const db = drizzle(pool);
     
     // Create users table
     await db.execute(sql`
@@ -67,5 +89,10 @@ export async function ensureTablesExist(): Promise<void> {
   } catch (error) {
     console.error("[Migration] Failed to create tables:", error);
     // Don't throw - let the app continue and show errors when DB is accessed
+  } finally {
+    // Close the pool to avoid hanging connections
+    if (pool) {
+      await pool.end();
+    }
   }
 }
