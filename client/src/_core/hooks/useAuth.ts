@@ -66,6 +66,8 @@ export function useAuth(options?: UseAuthOptions) {
     if (state.user) return;
     if (typeof window === "undefined") return;
     if (window.location.pathname === redirectPath) return;
+    // Only redirect if OAuth is configured (redirectPath is not empty)
+    if (!redirectPath) return;
 
     window.location.href = redirectPath
   }, [
