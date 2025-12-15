@@ -9,9 +9,8 @@ import { DetailView } from "@/components/DetailView";
 import { SyncDialog } from "@/components/SyncDialog";
 import { TrendsChart } from "@/components/TrendsChart";
 import { Button } from "@/components/ui/button";
-import { Download, Database, LogIn, User, LogOut } from "lucide-react";
+import { Download, User, LogOut } from "lucide-react";
 import { toast } from "sonner";
-import { getLoginUrl } from "@/const";
 
 const DEFAULT_FILTERS: FilterState = {
   search: "",
@@ -85,10 +84,6 @@ export default function Home() {
   };
 
   const handleOpenSyncDialog = () => {
-    if (!isAuthenticated) {
-      toast.error("Debes iniciar sesión para sincronizar datos");
-      return;
-    }
     setSyncResult(null);
     setIsSyncDialogOpen(true);
   };
@@ -200,25 +195,16 @@ export default function Home() {
                   Exportar CSV
                 </Button>
               )}
-              {authLoading ? (
-                <div className="h-9 w-24 bg-muted animate-pulse rounded-md" />
-              ) : isAuthenticated ? (
+              {isAuthenticated && user && (
                 <div className="flex items-center gap-2">
                   <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md">
                     <User className="h-4 w-4 text-muted-foreground" />
-                    <span className="text-sm font-medium">{user?.name || "Usuario"}</span>
+                    <span className="text-sm font-medium">{user.name || "Usuario"}</span>
                   </div>
                   <Button variant="ghost" size="sm" onClick={() => logout()}>
                     <LogOut className="h-4 w-4" />
                   </Button>
                 </div>
-              ) : (
-                <Button asChild>
-                  <a href={getLoginUrl()}>
-                    <LogIn className="h-4 w-4 mr-2" />
-                    Iniciar sesión
-                  </a>
-                </Button>
               )}
             </div>
           </div>

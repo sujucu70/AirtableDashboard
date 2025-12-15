@@ -151,8 +151,8 @@ export const appRouter = router({
         return await getCallEvaluationById(input.id);
       }),
 
-    // Sync from Airtable
-    syncFromAirtable: protectedProcedure
+    // Sync from Airtable (public - no auth required for standalone deployment)
+    syncFromAirtable: publicProcedure
       .input(z.object({ apiKey: z.string() }))
       .mutation(async ({ input }) => {
         const { apiKey } = input;
@@ -199,8 +199,8 @@ export const appRouter = router({
         }
       }),
 
-    // Clear all evaluations
-    clearAll: protectedProcedure.mutation(async () => {
+    // Clear all evaluations (public - no auth required for standalone deployment)
+    clearAll: publicProcedure.mutation(async () => {
       await deleteAllCallEvaluations();
       return { success: true };
     }),

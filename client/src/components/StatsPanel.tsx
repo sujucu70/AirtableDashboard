@@ -43,57 +43,57 @@ export function StatsPanel({ stats, isLoading }: StatsPanelProps) {
     <div className="space-y-4">
       {/* Main stats cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-white border-l-4 border-l-primary">
+        <Card className="bg-white border-l-4" style={{ borderLeftColor: '#6D84E3' }}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Total Llamadas</p>
-                <p className="text-3xl font-bold text-foreground">{stats.totalCalls}</p>
+                <p className="text-sm" style={{ color: '#B1B1B0' }}>Total Llamadas</p>
+                <p className="text-3xl font-bold" style={{ color: '#3F3F3F' }}>{stats.totalCalls}</p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center">
-                <Phone className="h-6 w-6 text-primary" />
+              <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(109, 132, 227, 0.1)' }}>
+                <Phone className="h-6 w-6" style={{ color: '#6D84E3' }} />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-l-4 border-l-green-500">
+        <Card className="bg-white border-l-4" style={{ borderLeftColor: '#6D84E3' }}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Puntuación Promedio</p>
-                <p className="text-3xl font-bold text-foreground">{stats.overallAverageScore.toFixed(1)}</p>
+                <p className="text-sm" style={{ color: '#B1B1B0' }}>Puntuación Promedio</p>
+                <p className="text-3xl font-bold" style={{ color: '#3F3F3F' }}>{stats.overallAverageScore.toFixed(1)}</p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-green-500/10 flex items-center justify-center">
-                <TrendingUp className="h-6 w-6 text-green-500" />
+              <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(109, 132, 227, 0.1)' }}>
+                <TrendingUp className="h-6 w-6" style={{ color: '#6D84E3' }} />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-l-4 border-l-blue-500">
+        <Card className="bg-white border-l-4" style={{ borderLeftColor: '#6D84E3' }}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Operadores</p>
-                <p className="text-3xl font-bold text-foreground">{stats.uniqueOperators.length}</p>
+                <p className="text-sm" style={{ color: '#B1B1B0' }}>Operadores</p>
+                <p className="text-3xl font-bold" style={{ color: '#3F3F3F' }}>{stats.uniqueOperators.length}</p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-blue-500/10 flex items-center justify-center">
-                <Users className="h-6 w-6 text-blue-500" />
+              <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(109, 132, 227, 0.1)' }}>
+                <Users className="h-6 w-6" style={{ color: '#6D84E3' }} />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="bg-white border-l-4 border-l-purple-500">
+        <Card className="bg-white border-l-4" style={{ borderLeftColor: '#6D84E3' }}>
           <CardContent className="pt-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Escenarios</p>
-                <p className="text-3xl font-bold text-foreground">{stats.uniqueScenarios.length}</p>
+                <p className="text-sm" style={{ color: '#B1B1B0' }}>Escenarios</p>
+                <p className="text-3xl font-bold" style={{ color: '#3F3F3F' }}>{stats.uniqueScenarios.length}</p>
               </div>
-              <div className="h-12 w-12 rounded-full bg-purple-500/10 flex items-center justify-center">
-                <BarChart3 className="h-6 w-6 text-purple-500" />
+              <div className="h-12 w-12 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(109, 132, 227, 0.1)' }}>
+                <BarChart3 className="h-6 w-6" style={{ color: '#6D84E3' }} />
               </div>
             </div>
           </CardContent>

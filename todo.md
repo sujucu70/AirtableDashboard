@@ -25,3 +25,7 @@
 - [x] Add trends chart to visualize operator score evolution over time
 - [x] Add date range filter to trends chart for analyzing specific periods
 - [x] Add Beyond CX logo to header
+- [x] Update stats cards to use corporate colors
+- [x] Make project work independently without Manus ecosystem
+- [x] Create deployment documentation (DEPLOY.md)
+- [x] Remove authentication requirement for sync functionality
