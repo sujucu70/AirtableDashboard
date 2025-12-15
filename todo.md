@@ -31,3 +31,7 @@
 - [x] Remove authentication requirement for sync functionality
 - [x] Review and fix responsive design issues
 - [x] Fix Render deploy issues (analytics env vars, OAuth config, chunk size warning)
+- [x] Fix TypeError Invalid URL error on Render deployment
+- [x] Fix database sync error on Render with TiDB (auto-create tables on startup)
+- [x] Fix Airtable data parsing error on sync (improved error handling)
+- [x] Fix TiDB Cloud SSL connection issue (proper SSL config with mysql2)

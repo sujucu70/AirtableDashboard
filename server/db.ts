@@ -1,17 +1,40 @@
-import { eq, like, or, and, gte, lte, desc, asc, sql } from "drizzle-orm";
+import { eq, like, or, and, gte, lte, desc, asc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import mysql from "mysql2/promise";
 import { InsertUser, users, callEvaluations, InsertCallEvaluation, CallEvaluation } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
-let _db: ReturnType<typeof drizzle> | null = null;
+let _db: any = null;
+let _pool: mysql.Pool | null = null;
 
 export async function getDb() {
   if (!_db && process.env.DATABASE_URL) {
     try {
-      _db = drizzle(process.env.DATABASE_URL);
+      // Parse the DATABASE_URL
+      const dbUrl = new URL(process.env.DATABASE_URL);
+      
+      // Create connection pool with SSL enabled for TiDB Cloud
+      _pool = mysql.createPool({
+        host: dbUrl.hostname,
+        port: parseInt(dbUrl.port) || 4000,
+        user: dbUrl.username,
+        password: dbUrl.password,
+        database: dbUrl.pathname.slice(1), // Remove leading /
+        ssl: {
+          minVersion: 'TLSv1.2',
+          rejectUnauthorized: true
+        },
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0
+      });
+      
+      _db = drizzle(_pool);
+      console.log("[Database] Connected successfully with SSL");
     } catch (error) {
       console.warn("[Database] Failed to connect:", error);
       _db = null;
+      _pool = null;
     }
   }
   return _db;
@@ -270,28 +293,28 @@ export async function getCallEvaluationStats() {
   const totalCalls = allEvaluations.length;
   
   // Calculate average score
-  const scoresWithValues = allEvaluations.filter(e => e.averageScore !== null);
+  const scoresWithValues = allEvaluations.filter((e: CallEvaluation) => e.averageScore !== null);
   const overallAverageScore = scoresWithValues.length > 0
-    ? scoresWithValues.reduce((sum, e) => sum + parseFloat(e.averageScore || '0'), 0) / scoresWithValues.length
+    ? scoresWithValues.reduce((sum: number, e: CallEvaluation) => sum + parseFloat(e.averageScore || '0'), 0) / scoresWithValues.length
     : 0;
 
   // Distribution by proceso
   const procesoDistribution: Record<string, number> = {};
-  allEvaluations.forEach(e => {
+  allEvaluations.forEach((e: CallEvaluation) => {
     const proceso = e.proceso || 'DESCONOCIDO';
     procesoDistribution[proceso] = (procesoDistribution[proceso] || 0) + 1;
   });
 
   // Distribution by priority
   const priorityDistribution: Record<string, number> = {};
-  allEvaluations.forEach(e => {
+  allEvaluations.forEach((e: CallEvaluation) => {
     const priority = e.priority || 'P0';
     priorityDistribution[priority] = (priorityDistribution[priority] || 0) + 1;
   });
 
   // Top performing operators
   const operatorScores: Record<string, { total: number; count: number; name: string }> = {};
-  allEvaluations.forEach(e => {
+  allEvaluations.forEach((e: CallEvaluation) => {
     if (e.operatorName && e.averageScore) {
       const name = e.operatorName;
       if (!operatorScores[name]) {
@@ -308,8 +331,8 @@ export async function getCallEvaluationStats() {
     .slice(0, 5);
 
   // Get unique operators and scenarios for filters
-  const uniqueOperators = Array.from(new Set(allEvaluations.map(e => e.operatorName).filter((n): n is string => n !== null)));
-  const uniqueScenarios = Array.from(new Set(allEvaluations.map(e => e.scenarioId).filter((n): n is string => n !== null)));
+  const uniqueOperators: string[] = Array.from(new Set(allEvaluations.map((e: CallEvaluation) => e.operatorName).filter((n: string | null): n is string => n !== null)));
+  const uniqueScenarios: string[] = Array.from(new Set(allEvaluations.map((e: CallEvaluation) => e.scenarioId).filter((n: string | null): n is string => n !== null)));
 
   return {
     totalCalls,
@@ -391,7 +414,7 @@ export async function getScoreTrends(filter?: TrendsFilter): Promise<{
     count: number;
   }>> = {};
 
-  allEvaluations.forEach(e => {
+  allEvaluations.forEach((e: CallEvaluation) => {
     // Use evaluatedAt or createdAt for date grouping
     const dateObj = e.evaluatedAt || e.createdAt;
     if (!dateObj) return;
