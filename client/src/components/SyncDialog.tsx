@@ -84,7 +84,11 @@ export function SyncDialog({ isOpen, onClose, onSync, isSyncing, syncResult }: S
               ) : (
                 <AlertCircle className="h-4 w-4" />
               )}
-              <AlertDescription>{syncResult.message}</AlertDescription>
+              <AlertDescription className="max-h-24 overflow-y-auto text-sm">
+                {syncResult.message.length > 300 
+                  ? syncResult.message.substring(0, 300) + '...' 
+                  : syncResult.message}
+              </AlertDescription>
             </Alert>
           )}
         </div>

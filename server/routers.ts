@@ -177,7 +177,16 @@ export const appRouter = router({
 
             if (!response.ok) {
               const errorText = await response.text();
-              throw new Error(`Airtable API error: ${response.status} - ${errorText}`);
+              // Parse Airtable error for cleaner message
+              try {
+                const errorJson = JSON.parse(errorText);
+                if (errorJson.error?.message) {
+                  throw new Error(`Airtable: ${errorJson.error.message}`);
+                }
+              } catch (parseErr) {
+                // If not JSON, use status code
+              }
+              throw new Error(`Airtable API error (${response.status}): Verifica tu API Key y permisos`);
             }
 
             const data = await response.json() as { records: AirtableRecord[]; offset?: string };
@@ -185,17 +194,31 @@ export const appRouter = router({
             offset = data.offset;
           } while (offset);
 
+          if (allRecords.length === 0) {
+            throw new Error('No se encontraron registros en Airtable. Verifica que la tabla tenga datos.');
+          }
+
           // Map and upsert all records
           const evaluations = allRecords.map(mapAirtableToEvaluation);
-          await bulkUpsertCallEvaluations(evaluations);
+          
+          try {
+            await bulkUpsertCallEvaluations(evaluations);
+          } catch (dbError) {
+            console.error('Database error during sync:', dbError);
+            throw new Error('Error al guardar en la base de datos. Verifica la conexión DATABASE_URL.');
+          }
 
           return {
             success: true,
             recordsImported: evaluations.length,
           };
         } catch (error) {
-          console.error('Airtable sync error:', error);
-          throw new Error(`Failed to sync from Airtable: ${error instanceof Error ? error.message : 'Unknown error'}`);
+          console.error('[Airtable Sync Error]', error);
+          // Return clean error message
+          const message = error instanceof Error ? error.message : 'Error desconocido';
+          // Truncate if too long
+          const cleanMessage = message.length > 200 ? message.substring(0, 200) + '...' : message;
+          throw new Error(cleanMessage);
         }
       }),
 
