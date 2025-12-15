@@ -242,10 +242,10 @@ export function TrendsChart({
       </CardHeader>
       <CardContent>
         {/* Date Range Filter */}
-        <div className="mb-6 p-4 bg-muted/30 rounded-lg border">
-          <div className="flex items-center gap-2 mb-3">
+        <div className="mb-4 sm:mb-6 p-3 sm:p-4 bg-muted/30 rounded-lg border">
+          <div className="flex flex-wrap items-center gap-2 mb-3">
             <Calendar className="h-4 w-4 text-primary" />
-            <span className="text-sm font-medium">Filtrar por rango de fechas</span>
+            <span className="text-xs sm:text-sm font-medium">Filtrar por rango de fechas</span>
             {dateRange && (
               <Button
                 variant="ghost"
@@ -254,20 +254,20 @@ export function TrendsChart({
                 className="ml-auto h-7 px-2 text-muted-foreground hover:text-foreground"
               >
                 <X className="h-4 w-4 mr-1" />
-                Limpiar
+                <span className="hidden sm:inline">Limpiar</span>
               </Button>
             )}
           </div>
           
           {/* Preset buttons */}
-          <div className="flex flex-wrap gap-2 mb-3">
+          <div className="flex flex-wrap gap-1.5 sm:gap-2 mb-3">
             {DATE_PRESETS.map((preset) => (
               <Button
                 key={preset.days}
                 variant="outline"
                 size="sm"
                 onClick={() => handlePreset(preset.days)}
-                className="h-7 text-xs"
+                className="h-6 sm:h-7 text-[10px] sm:text-xs px-2 sm:px-3"
               >
                 {preset.label}
               </Button>
@@ -275,9 +275,9 @@ export function TrendsChart({
           </div>
           
           {/* Custom date range */}
-          <div className="flex flex-wrap items-end gap-3">
+          <div className="flex flex-wrap items-end gap-2 sm:gap-3">
             <div className="space-y-1">
-              <Label htmlFor="startDate" className="text-xs text-muted-foreground">
+              <Label htmlFor="startDate" className="text-[10px] sm:text-xs text-muted-foreground">
                 Fecha inicio
               </Label>
               <Input
@@ -285,11 +285,11 @@ export function TrendsChart({
                 type="date"
                 value={localStartDate}
                 onChange={(e) => setLocalStartDate(e.target.value)}
-                className="h-8 w-[140px] text-sm"
+                className="h-7 sm:h-8 w-[120px] sm:w-[140px] text-xs sm:text-sm"
               />
             </div>
             <div className="space-y-1">
-              <Label htmlFor="endDate" className="text-xs text-muted-foreground">
+              <Label htmlFor="endDate" className="text-[10px] sm:text-xs text-muted-foreground">
                 Fecha fin
               </Label>
               <Input
@@ -297,14 +297,14 @@ export function TrendsChart({
                 type="date"
                 value={localEndDate}
                 onChange={(e) => setLocalEndDate(e.target.value)}
-                className="h-8 w-[140px] text-sm"
+                className="h-7 sm:h-8 w-[120px] sm:w-[140px] text-xs sm:text-sm"
               />
             </div>
             <Button
               size="sm"
               onClick={handleApplyDateFilter}
               disabled={!localStartDate || !localEndDate}
-              className="h-8"
+              className="h-7 sm:h-8 text-xs"
             >
               Aplicar
             </Button>
@@ -354,7 +354,7 @@ export function TrendsChart({
               </Select>
             </div>
 
-            <div className="h-80">
+            <div className="h-60 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={overallChartData}>
                   <defs>
@@ -460,7 +460,7 @@ export function TrendsChart({
               </Select>
             </div>
 
-            <div className="h-80">
+            <div className="h-60 sm:h-80">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={operatorComparisonData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#E4E3E3" />

@@ -86,7 +86,7 @@ function SortableHeader({
 export function DataTable({ data, onViewDetails, sortBy, sortOrder, onSort }: DataTableProps) {
   return (
     <div className="border rounded-lg overflow-hidden bg-white">
-      <div className="overflow-auto custom-scrollbar max-h-[calc(100vh-400px)]">
+      <div className="overflow-auto custom-scrollbar max-h-[60vh] sm:max-h-[calc(100vh-400px)]">
         <Table>
           <TableHeader className="sticky top-0 bg-white z-10">
             <TableRow className="bg-muted/30">

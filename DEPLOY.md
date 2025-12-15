@@ -19,7 +19,7 @@ Configure the following environment variables in your hosting platform:
 | `DATABASE_URL` | MySQL connection string with SSL | `mysql://user:password@host:3306/dbname?ssl={"rejectUnauthorized":true}` |
 | `JWT_SECRET` | Secret key for session tokens (min 32 chars) | Generate with: `openssl rand -hex 32` |
 | `NODE_ENV` | Environment mode | `production` |
-| `PORT` | Server port (optional, defaults to 3000) | `3000` |
+| `PORT` | Server port (Render uses 10000) | `10000` |
 
 ### Notes on Authentication
 

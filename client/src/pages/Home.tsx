@@ -174,30 +174,30 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="bg-white border-b sticky top-0 z-20">
-        <div className="container py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="container py-3 sm:py-4">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <div className="flex items-center gap-3 sm:gap-4">
               <img 
                 src="/beyond-logo.png" 
                 alt="Beyond CX" 
-                className="h-8 w-auto"
+                className="h-6 sm:h-8 w-auto"
               />
-              <div className="h-6 w-px bg-border" />
+              <div className="hidden sm:block h-6 w-px bg-border" />
               <div>
-                <h1 className="text-lg font-semibold text-foreground">Customer Interactions Dashboard</h1>
-                <p className="text-xs text-muted-foreground">Análisis de evaluaciones de llamadas</p>
+                <h1 className="text-base sm:text-lg font-semibold text-foreground">Customer Interactions Dashboard</h1>
+                <p className="text-xs text-muted-foreground hidden sm:block">Análisis de evaluaciones de llamadas</p>
               </div>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               {evaluations && evaluations.length > 0 && (
-                <Button variant="outline" onClick={handleExportCSV}>
-                  <Download className="h-4 w-4 mr-2" />
-                  Exportar CSV
+                <Button variant="outline" size="sm" className="text-xs sm:text-sm" onClick={handleExportCSV}>
+                  <Download className="h-4 w-4 sm:mr-2" />
+                  <span className="hidden sm:inline">Exportar CSV</span>
                 </Button>
               )}
               {isAuthenticated && user && (
                 <div className="flex items-center gap-2">
-                  <div className="flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md">
+                  <div className="hidden md:flex items-center gap-2 px-3 py-1.5 bg-muted rounded-md">
                     <User className="h-4 w-4 text-muted-foreground" />
                     <span className="text-sm font-medium">{user.name || "Usuario"}</span>
                   </div>
